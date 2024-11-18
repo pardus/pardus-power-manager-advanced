@@ -1,4 +1,4 @@
-Source: pardus-power-manager
+Source: pardus-power-manager-advanced
 Section: utils
 Priority: optional
 Maintainer: Ali Rıza KESKİN <ali.riza.keskin@pardus.org.tr>
@@ -6,7 +6,7 @@ Build-Depends: meson, ninja-build
 Standards-Version: 4.3.0
 Homepage: https://pardus.org.tr
 
-Package: pardus-power-manager
+Package: pardus-power-manager-advanced
 Architecture: all
 Depends: ${misc:Depends},
          libc6,
