@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-12 07:57+0000\n"
-"PO-Revision-Date: 2024-07-16 01:02+0100\n"
+"PO-Revision-Date: 2024-11-20 19:32+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <hugokarvalho@hotmail.com>\n"
 "Language: pt\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: src/data/MainWindow.ui:68
 msgid "POWERSAVE"
@@ -25,7 +25,7 @@ msgstr "POUPANÇA DE ENERGIA"
 
 #: src/data/MainWindow.ui:111
 msgid "BALANCED"
-msgstr ""
+msgstr "EQUILIBRADO"
 
 #: src/data/MainWindow.ui:154
 msgid "PERFORMANCE"
@@ -49,7 +49,7 @@ msgstr "%"
 
 #: src/data/MainWindow.ui:337
 msgid "Stop charging the battery at 80%"
-msgstr "Parar de carregar a bateria a 80%"
+msgstr "Parar de carregar quando a bateria estiver a 80%"
 
 #: src/data/MainWindow.ui:361
 msgid "Screen Brightness:"
@@ -57,44 +57,43 @@ msgstr "Luminosidade do ecrã:"
 
 #: src/data/MainWindow.ui:428
 msgid "Manage power for USB"
-msgstr ""
+msgstr "Gerir a energia para USB"
 
 #: src/data/MainWindow.ui:463
 msgid "Manage power for PCI"
-msgstr ""
+msgstr "Gerir a energia para PCI"
 
 #: src/data/MainWindow.ui:498
 msgid "Manage power for SCSI"
-msgstr ""
+msgstr "Gerir a energia para SCSI"
 
 #: src/data/MainWindow.ui:533
 msgid "Manage power for Block Devices"
-msgstr ""
+msgstr "Gerir a energia para Dispositivos de Bloco"
 
 #: src/data/MainWindow.ui:568
 msgid "Manage power for I2C"
-msgstr ""
+msgstr "Gerir a energia para I2C"
 
 #: src/data/MainWindow.ui:603
 msgid "Manage power for Audio"
-msgstr ""
+msgstr "Gerir a energia para Áudio"
 
 #: src/data/MainWindow.ui:638
 msgid "Manage power for Bluetooth"
-msgstr ""
+msgstr "Gerir a energia para Bluetooth"
 
 #: src/data/MainWindow.ui:673
 msgid "Manage power for GPU"
-msgstr ""
+msgstr "Gerir a energia para GPU"
 
 #: src/data/MainWindow.ui:708
 msgid "Manage power for Network"
-msgstr ""
+msgstr "Gerir a energia para Rede"
 
 #: src/data/MainWindow.ui:754
-#, fuzzy
 msgid "Enable Unstable Features"
-msgstr "Ativar funcionalidades instáveis do Gestor de Energia"
+msgstr "Ativar funcionalidades instáveis"
 
 #: src/data/MainWindow.ui:851 src/client/MainWindow.py:85
 #: src/client/MainWindow.py:88
@@ -103,15 +102,15 @@ msgstr "Gestor de Energia Pardus"
 
 #: src/data/MainWindow.ui:928
 msgid "About"
-msgstr ""
+msgstr "Acerca"
 
 #: src/data/MainWindow.ui:972
 msgid "Advanced Settings"
-msgstr ""
+msgstr "Definições avançadas"
 
 #: src/data/MainWindow.ui:1016
 msgid "Main Page"
-msgstr ""
+msgstr "Página principal"
 
 #: src/data/MainWindow.ui:1070
 msgid "Your device does not have a linux acpi table ."
@@ -161,7 +160,7 @@ msgstr "poupança de energia"
 
 #: src/client/MainWindow.py:38
 msgid "balanced"
-msgstr ""
+msgstr "equilibrado"
 
 #: src/client/MainWindow.py:39
 msgid "performance"
@@ -190,7 +189,7 @@ msgstr "Desempenho"
 
 #: src/client/MainWindow.py:184
 msgid "Balanced"
-msgstr ""
+msgstr "Equilibrado"
 
 #: src/client/MainWindow.py:185
 msgid "Powersave"
