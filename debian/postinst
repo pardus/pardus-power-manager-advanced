@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ ! -f /etc/pardus/ppm.conf ] ; then
     mkdir -p /etc/pardus/ppm.conf.d/
-    cp /usr/share/pardus/power-manager/data/config.ini /etc/pardus/ppm.conf
+    cp /usr/share/pardus/power-manager-advanced/data/config.ini /etc/pardus/ppm.conf
 fi
 if which systemctl > /dev/null ; then
     systemctl enable ppm || true

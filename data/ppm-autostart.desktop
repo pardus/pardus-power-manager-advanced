@@ -2,5 +2,5 @@
 Type=Application
 Icon=pardus-power-manager
 Name=Pardus Power Manager
-Exec=/usr/share/pardus/power-manager/client/main.py --autostart
+Exec=/usr/share/pardus/power-manager-advanced/client/main.py --autostart
 Comment=Pardus Power Manager Client

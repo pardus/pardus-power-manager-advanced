@@ -16,8 +16,8 @@ Depends: ${misc:Depends},
          gir1.2-ayatanaappindicator3-0.1,
          gir1.2-gtk-3.0
 Recommends: python3-inotify
-Breaks: tlp, power-profiles-daemon
-Conflicts: tlp, power-profiles-daemon
+Breaks: tlp, power-profiles-daemon, pardus-power-manager
+Conflicts: tlp, power-profiles-daemon, pardus-power-manager
 Replaces: tlp, power-profiles-daemon
-Description: Pardus power manager.
- Pardus power manager.
+Description: Pardus advanced power manager.
+ Pardus power manager (advanced).

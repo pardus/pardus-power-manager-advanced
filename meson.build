@@ -10,7 +10,7 @@ subdir('po')
 libexec_dir = '/usr/libexec/'
 bin_dir = '/usr/bin/'
 
-pardus_dir = '/usr/share/pardus/power-manager/'
+pardus_dir = '/usr/share/pardus/power-manager-advanced/'
 icons_dir = '/usr/share/icons/hicolor/scalable/status/'
 app_icon_dir = '/usr/share/icons/hicolor/scalable/apps/'
 udev_dir = '/lib/udev/rules.d'
@@ -33,7 +33,7 @@ install_data('data/pardus-power-manager.svg', install_dir: app_icon_dir)
 # install desktop files
 install_data('data/ppm-client.desktop', install_dir: application_dir, rename: 'tr.org.pardus.power-manager.desktop')
 meson.add_install_script('sh', '-c',
-    'ln -s ../share/pardus/power-manager/client/main.py ' +
+    'ln -s ../share/pardus/power-manager-advanced/client/main.py ' +
     '${DESTDIR}/' + bin_dir + '/pardus-power-manager')
 install_data('data/ppm-autostart.desktop', install_dir: autostart_dir)
 # install policy file
