@@ -2,6 +2,9 @@ from util import *
 import backends.power as power
 import backends.backlight as backlight
 import backends.battery as battery
+import subprocess
+
+osi_list = list_acpi_osi()
 
 def main(data):
     if os.path.exists("/usr/share/pardus/power-manager/pause-service"):
@@ -52,6 +55,7 @@ def main(data):
     udata["info"]["live"] = is_live()
     udata["info"]["oem"] = is_oem_available()
     udata["info"]["deep"] = is_support_deep()
+    udata["osi"] = osi_list
     if "show" in data:
         udata["show"] = data["show"]
     udata["backlight"] = {}
@@ -85,6 +89,14 @@ def battery_init():
 def write_settings(data):
     ctx = ""
     for section in data:
+        if section == "osi":
+            if "prefer" in data["osi"].keys() and data["osi"]["prefer"] != "":
+                grub_cfg = "GRUB_CMDLINE_LINUX_DEFAULT=\"${GRUB_CMDLINE_LINUX_DEFAULT} acpi_osi=\\\""+data["osi"]["prefer"]+"\\\"\"" 
+                writefile("/etc/default/grub.d/99-ppm.conf", grub_cfg)
+            else:
+                os.unlink("/etc/default/grub.d/99-ppm.conf")
+            subprocess.run(["grub-mkconfig", "-o", "/boot/grub/grub.cfg"])
+            continue
         ctx += "[" + section + "]\n"
         for var in data[section]:
             ctx += str(var) + "=" + str(data[section][var]) +"\n"

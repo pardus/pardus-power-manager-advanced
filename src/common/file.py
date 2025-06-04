@@ -1,4 +1,6 @@
 import os
+import string
+
 def writefile(path,data):
     try:
         with open(path,"w") as f:
@@ -22,6 +24,20 @@ def listdir(path):
     if os.path.isdir(path):
         return os.listdir(path)
     return []
+
+
+def strings(filename, min=4):
+    with open(filename, errors="ignore") as f:
+        result = ""
+        for c in f.read():
+            if c in string.printable:
+                result += c
+                continue
+            if len(result) >= min:
+                yield result
+            result = ""
+        if len(result) >= min:
+            yield result
 
 
 def singleinstance():

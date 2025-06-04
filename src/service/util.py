@@ -17,6 +17,14 @@ def listen(main):
             data = json.loads(data)
             if "pid" in data:
                 main(data)
+@cached
+def list_acpi_osi():
+    ret = []
+    for name in strings("/sys/firmware/acpi/tables/DSDT"):
+        if "_OSI\n" in name.strip():
+            ret.append(name.split("\n")[-1])
+    ret.sort()
+    return ret
 
 def send_client(data):
     print(data)

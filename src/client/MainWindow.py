@@ -130,6 +130,7 @@ class MainWindow:
         self.o("ui_button_performance").connect("clicked",self.performance_event)
         self.o("ui_combobox_acmode").connect("changed",self.save_settings)
         self.o("ui_combobox_batmode").connect("changed",self.save_settings)
+        self.o("ui_combobox_osi").connect("changed",self.save_settings)
         self.o("ui_checkbox_battery_treshold").connect("toggled",self.save_settings)
         self.o("ui_scale_brightness").connect("value-changed",self.set_brightness)
         self.o("ui_spinbutton_switch_to_performance").connect("value-changed",self.save_settings)
@@ -195,6 +196,27 @@ class MainWindow:
         self.o("ui_combobox_batmode").pack_start(cellrenderertext, True)
         self.o("ui_combobox_batmode").add_attribute(cellrenderertext, "text", 0)
 
+    @cached
+    def osilist_init(self, osis):
+        store = Gtk.ListStore(str, str)
+        store.append([_("Default"), ""])
+        for osi in osis:
+            store.append([osi, osi])
+        self.o("ui_combobox_osi").set_model(store)
+        cellrenderertext = Gtk.CellRendererText()
+        self.o("ui_combobox_osi").pack_start(cellrenderertext, True)
+        self.o("ui_combobox_osi").add_attribute(cellrenderertext, "text", 0)
+        osi = ""
+        if os.path.isfile("/etc/default/grub.d/99-ppm.conf"):
+            for line in readfile("/etc/default/grub.d/99-ppm.conf").split("\n"):
+                if "acpi_osi=\\\"" in line:
+                    osi = line.split("acpi_osi=\\\"")[1].split("\\\"")[0]
+                    break
+        if osi in osis:
+            self.o("ui_combobox_osi").set_active(osis.index(osi)+1)
+        else:            
+            self.o("ui_combobox_osi").set_active(0)
+
     def spinbutton_init(self):
         self.o("ui_spinbutton_switch_to_performance").set_range(0,100)
         self.o("ui_spinbutton_switch_to_performance").set_increments(1,1)
@@ -223,6 +245,8 @@ class MainWindow:
         self.init()
         #print(data)
         self.update_lock = True
+        if "osi" in data:
+            self.osilist_init(data["osi"])
         if "mode" in data:
             if self.current_mode != data["mode"]:
                 if self.current_mode != None:
@@ -306,12 +330,12 @@ class MainWindow:
         # service
         data["service"] = {}
         data["service"]["enabled"] = True
+        for name in ["unstable", "usb-wakeups"]:
+            data["service"][name] = self.o("ui_switch_"+name).get_active()
         # power
         data["power"]={}
         for name in ["usb", "pci","scsi","block","i2c","audio","bluetooth","gpu","network"]:
             data["power"][name] = self.o("ui_switch_"+name).get_active()
-        for name in ["unstable", "usb-wakeups"]:
-            data["service"][name] = self.o("ui_switch_"+name).get_active()
         # modes
         data["modes"] = {}
         ac_w = self.o("ui_combobox_acmode")
@@ -323,6 +347,11 @@ class MainWindow:
         if t:
             data["modes"]["bat-mode"] = bat_w.get_model()[t][1]
         data["modes"]["charge_stop_enabled"] = str(self.o("ui_checkbox_battery_treshold").get_active())
+        # osi
+        data["osi"] = {}
+        t = self.o("ui_combobox_osi").get_active_iter()
+        if t:
+            data["osi"]["prefer"] = self.o("ui_combobox_osi").get_model()[t][1]
         # backlight
         data["modes"]["powersave_threshold"] = str(self.o("ui_spinbutton_switch_to_performance").get_value())
         fdata = {}
