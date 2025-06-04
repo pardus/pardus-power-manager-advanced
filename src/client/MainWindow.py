@@ -171,8 +171,11 @@ class MainWindow:
     def settings_init(self):
         self.__home_event(None)
         # Update settings buttons
-        for name in ["usb", "pci","scsi","block","i2c","audio","bluetooth","gpu","network","unstable"]:
-             self.o("ui_switch_"+name).set_active(get(name, name != "unstable", "power"))
+        for name in ["usb", "pci","scsi","block","i2c","audio","bluetooth","gpu","network"]:
+             self.o("ui_switch_"+name).set_active(get(name, True, "power"))
+             self.o("ui_switch_"+name).connect("state-set",self.save_settings)
+        for name in ["unstable", "usb-wakeups"]:
+             self.o("ui_switch_"+name).set_active(get(name, False, "service"))
              self.o("ui_switch_"+name).connect("state-set",self.save_settings)
 
 
@@ -307,6 +310,8 @@ class MainWindow:
         data["power"]={}
         for name in ["usb", "pci","scsi","block","i2c","audio","bluetooth","gpu","network"]:
             data["power"][name] = self.o("ui_switch_"+name).get_active()
+        for name in ["unstable", "usb-wakeups"]:
+            data["service"][name] = self.o("ui_switch_"+name).get_active()
         # modes
         data["modes"] = {}
         ac_w = self.o("ui_combobox_acmode")

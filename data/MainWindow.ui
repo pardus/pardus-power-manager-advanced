@@ -396,7 +396,7 @@
               </object>
               <packing>
                 <property name="name">main</property>
-                <property name="title" translatable="no">main</property>
+                <property name="title">main</property>
               </packing>
             </child>
             <child>
@@ -779,7 +779,39 @@
                           </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkBox" id="ui_box_usb_wakeup">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="label" translatable="yes">Enable all USB ACPI wakeups</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSwitch" id="ui_switch_usb-wakeups">
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="pack-type">end</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">11</property>
+                          </packing>
                         </child>
                       </object>
                     </child>
@@ -788,7 +820,7 @@
               </object>
               <packing>
                 <property name="name">settings</property>
-                <property name="title" translatable="no">settings</property>
+                <property name="title">settings</property>
                 <property name="position">1</property>
               </packing>
             </child>
