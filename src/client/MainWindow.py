@@ -2,7 +2,7 @@ import gi, os, time, subprocess
 gi.require_version("Gtk","3.0")
 gi.require_version("Notify", "0.7")
 
-from gi.repository import Gtk
+from gi.repository import Gtk, GLib
 from gi.repository import Notify
 
 import json
@@ -64,6 +64,7 @@ class MainWindow:
             return
         self.menu = Gtk.Menu()
         self.current_mode = None
+        self.update_lock = False
 
         if not self.__window_status:
              self.open_window.set_label(_("Show"))
@@ -327,6 +328,9 @@ class MainWindow:
 
     @asynchronous
     def save_settings(self, a=None, b=None):
+        if self.update_lock:
+            return
+        self.update_lock = True
         data = {}
         # service
         data["service"] = {}
@@ -355,8 +359,14 @@ class MainWindow:
             data["osi"]["prefer"] = self.o("ui_combobox_osi").get_model()[t][1]
         # backlight
         data["modes"]["powersave_threshold"] = str(self.o("ui_spinbutton_switch_to_performance").get_value())
+        self.o("ui_stack_main").set_visible_child_name("wait")
         subprocess.run(["pkexec", "/usr/share/pardus/power-manager-advanced/service/actions.py", "save-config", json.dumps(data)])
-        self.update_request(True)
+        def post_update():
+            reload_config()
+            self.settings_init()
+            self.value_init()
+            self.update_lock = False
+        GLib.idle_add(post_update)
 
 ###### utility functions ######
 
