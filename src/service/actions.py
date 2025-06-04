@@ -2,6 +2,7 @@
 from util import *
 import sys
 import subprocess
+import json
 
 if len(sys.argv) < 2:
     sys.exit(0)
@@ -14,7 +15,8 @@ def write_settings(data):
                 grub_cfg = "GRUB_CMDLINE_LINUX_DEFAULT=\"${GRUB_CMDLINE_LINUX_DEFAULT} acpi_osi=\\\""+data["osi"]["prefer"]+"\\\"\""
                 writefile("/etc/default/grub.d/99-ppm.conf", grub_cfg)
             else:
-                os.unlink("/etc/default/grub.d/99-ppm.conf")
+                if os.path.isfile("/etc/default/grub.d/99-ppm.conf"):
+                    os.unlink("/etc/default/grub.d/99-ppm.conf")
             subprocess.run(["grub-mkconfig", "-o", "/boot/grub/grub.cfg"])
             continue
         ctx += "[" + section + "]\n"
@@ -25,4 +27,4 @@ def write_settings(data):
 
 
 if sys.argv[1] == "save-config":
-    write_settings(sys.argv[2])
+    write_settings(json.loads(sys.argv[2]))
