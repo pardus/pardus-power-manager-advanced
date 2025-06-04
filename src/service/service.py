@@ -40,8 +40,7 @@ def main(data):
             for dev in data["new-backlight"]:
                 backlight.set_brightness(dev, data["new-backlight"][dev])
 
-    if "new-config" in data:
-        write_settings(json.loads(data["new-config"]))
+    if "reload-config" in data:
         reload_config()
 
     # client update
@@ -86,19 +85,3 @@ def battery_init():
             acpi_battery.append(b)
 
 
-def write_settings(data):
-    ctx = ""
-    for section in data:
-        if section == "osi":
-            if "prefer" in data["osi"].keys() and data["osi"]["prefer"] != "":
-                grub_cfg = "GRUB_CMDLINE_LINUX_DEFAULT=\"${GRUB_CMDLINE_LINUX_DEFAULT} acpi_osi=\\\""+data["osi"]["prefer"]+"\\\"\"" 
-                writefile("/etc/default/grub.d/99-ppm.conf", grub_cfg)
-            else:
-                os.unlink("/etc/default/grub.d/99-ppm.conf")
-            subprocess.run(["grub-mkconfig", "-o", "/boot/grub/grub.cfg"])
-            continue
-        ctx += "[" + section + "]\n"
-        for var in data[section]:
-            ctx += str(var) + "=" + str(data[section][var]) +"\n"
-        ctx += "\n"
-    writefile("/etc/pardus/ppm.conf.d/99-ppm-settings.conf",ctx)

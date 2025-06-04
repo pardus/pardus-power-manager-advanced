@@ -214,7 +214,7 @@ class MainWindow:
                     break
         if osi in osis:
             self.o("ui_combobox_osi").set_active(osis.index(osi)+1)
-        else:            
+        else:
             self.o("ui_combobox_osi").set_active(0)
 
     def spinbutton_init(self):
@@ -325,6 +325,7 @@ class MainWindow:
 
 ###### settings saver ######
 
+    @asynchronous
     def save_settings(self, a=None, b=None):
         data = {}
         # service
@@ -354,11 +355,8 @@ class MainWindow:
             data["osi"]["prefer"] = self.o("ui_combobox_osi").get_model()[t][1]
         # backlight
         data["modes"]["powersave_threshold"] = str(self.o("ui_spinbutton_switch_to_performance").get_value())
-        fdata = {}
-        fdata["update"]="client"
-        fdata["new-config"]=json.dumps(data)
-        fdata["pid"] = os.getpid()
-        send_server(fdata)
+        subprocess.run(["pkexec", "/usr/share/pardus/power-manager-advanced/service/actions.py", "save-config", json.dumps(data)])
+        self.update_request(True)
 
 ###### utility functions ######
 
