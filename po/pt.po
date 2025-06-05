@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the pardus-power-manager package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Hugo Carvalho <hugokarvalho@hotmail.com>, 2022, 2023, 2024.
+# Hugo Carvalho <hugokarvalho@hotmail.com>, 2022, 2023, 2024, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-04 12:37+0300\n"
-"PO-Revision-Date: 2024-11-20 19:32+0000\n"
+"PO-Revision-Date: 2025-06-06 00:52+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <hugokarvalho@hotmail.com>\n"
 "Language: pt\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.6\n"
 
 #: src/data/MainWindow.ui:68
 msgid "POWERSAVE"
@@ -97,19 +97,19 @@ msgstr "Ativar funcionalidades instáveis"
 
 #: src/data/MainWindow.ui:789
 msgid "Enable all USB ACPI wakeups"
-msgstr ""
+msgstr "Ativar todas as ativações USB ACPI"
 
 #: src/data/MainWindow.ui:825
 msgid "Prefered ACPI osi:"
-msgstr ""
+msgstr "ACPI osi preferido:"
 
 #: src/data/MainWindow.ui:878
 msgid "Changes are being applied. Please wait."
-msgstr ""
+msgstr "As alterações estão a ser aplicadas. Aguarde."
 
 #: src/data/MainWindow.ui:904
 msgid "wait"
-msgstr ""
+msgstr "aguardar"
 
 #: src/data/MainWindow.ui:964 src/client/MainWindow.py:86
 #: src/client/MainWindow.py:89
@@ -217,7 +217,7 @@ msgstr "Não fazer nada"
 
 #: src/client/MainWindow.py:203
 msgid "Default"
-msgstr ""
+msgstr "Predefinição"
 
 #: src/client/MainWindow.py:254
 msgid "Power profile changed: "
