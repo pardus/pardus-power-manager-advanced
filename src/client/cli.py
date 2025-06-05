@@ -5,6 +5,7 @@ import json
 def usage():
     print(sys.argv)
     print("Usage: ppm [set/get] [mode/backlight/battery/info] (value)")
+    print("  Modes: performance, balanced, powersave, ai_optimized")
     exit(1)
 
 if len(sys.argv) <= 2 and (len(sys.argv) < 2 or sys.argv[1] != "show"):

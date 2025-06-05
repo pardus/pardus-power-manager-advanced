@@ -3,9 +3,11 @@ from util import writefile, readfile, listdir
 from backends.cpu import list_cpu, list_big_cpu, list_little_cpu,  change_cpu_status
 from backends.backlight import set_brightness
 from common import *
+from service.ai_assistant import AIAssistant
 
 
 _cur_mode = None
+ai_assistant = AIAssistant()
 
 def set_mode(mode):
     global _cur_mode
@@ -21,6 +23,9 @@ def set_mode(mode):
     elif mode == "powersave":
         _powersave()
         backlight = get("backlight-powersave","%50","modes")
+    elif mode == "ai_optimized":
+        _ai_optimized()
+        backlight = get("backlight-ai_optimized","%75","modes")
     else:
         return
     _cur_mode = mode
@@ -340,6 +345,43 @@ def _balanced():
     set_network_mode(True)
     set_bluetooth_mode(True)
     set_nvme_mode(True)
+
+
+@asynchronous
+def _ai_optimized():
+    """
+    AI Optimized mode uses the AI Assistant to choose an underlying power profile,
+    or a configured default mode if the assistant is disabled.
+    """
+    ai_enabled = get("enabled", "true", "ai_assistant").lower() == "true"
+
+    if ai_enabled:
+        recommended_mode = ai_assistant.get_recommendation()
+        log(f"AI Optimized mode: AI Assistant enabled, recommended: {recommended_mode}")
+        if recommended_mode == "performance":
+            _performance()
+        elif recommended_mode == "balanced":
+            _balanced()
+        elif recommended_mode == "powersave":
+            _powersave()
+        else:
+            log(f"AI Assistant recommended an unknown mode: {recommended_mode}. Defaulting to balanced.")
+            _balanced()
+    else:
+        default_mode = get("default_mode", "balanced", "ai_assistant")
+        log(f"AI Optimized mode: AI Assistant disabled, using default_mode: {default_mode}")
+        if default_mode == "performance":
+            _performance()
+        elif default_mode == "balanced":
+            _balanced()
+        elif default_mode == "powersave":
+            _powersave()
+        else:
+            log(f"Configured default_mode '{default_mode}' is unknown. Defaulting to balanced.")
+            _balanced()
+
+    # The actual settings applied are from one of the above modes.
+    # _ai_optimized itself doesn't have a fixed set of power settings anymore.
 
 
 @asynchronous

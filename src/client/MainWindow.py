@@ -37,6 +37,7 @@ actions_file = os.path.dirname(os.path.abspath(__file__)) + "/actions.py"
 _("powersave")
 _("balanced")
 _("performance")
+_("ai_optimized")
 
 class MainWindow:
 
@@ -129,6 +130,7 @@ class MainWindow:
         self.o("ui_button_powersave").connect("clicked",self.powersave_event)
         self.o("ui_button_balanced").connect("clicked",self.balanced_event)
         self.o("ui_button_performance").connect("clicked",self.performance_event)
+        self.o("ui_button_ai_optimized").connect("clicked",self.ai_optimized_event)
         self.o("ui_combobox_acmode").connect("changed",self.save_settings)
         self.o("ui_combobox_batmode").connect("changed",self.save_settings)
         self.o("ui_combobox_osi").connect("changed",self.save_settings)
@@ -187,6 +189,7 @@ class MainWindow:
         store = Gtk.ListStore(str, str)
         store.append([_("Performance"),"performance"])
         store.append([_("Balanced"),"balanced"])
+        store.append([_("AI Optimized"),"ai_optimized"])
         store.append([_("Powersave"),"powersave"])
         store.append([_("Do Noting"),"ignore"])
         self.o("ui_combobox_acmode").set_model(store)
@@ -227,7 +230,7 @@ class MainWindow:
     def value_init(self):
         self.o("ui_spinbutton_switch_to_performance").set_value(float(get("powersave_threshold","25","modes")))
         self.o("ui_checkbox_battery_treshold").set_active(get("charge_stop_enabled","False","modes").lower() == "true")
-        l = ["performance", "balanced", "powersave", "ignore"]
+        l = ["performance", "balanced", "ai_optimized", "powersave", "ignore"]
         self.o("ui_combobox_acmode").set_active(l.index(get("ac-mode","balanced","modes")))
         self.o("ui_combobox_batmode").set_active(l.index(get("bat-mode","powersave","modes")))
 
@@ -259,7 +262,10 @@ class MainWindow:
                 elif self.current_mode == "balanced":
                     self.power_mode.set_label(_("Enable Powersave"))
                     self.indicator.set_icon("pardus-pm-balanced-symbolic")
-                else:
+                elif self.current_mode == "ai_optimized":
+                    self.power_mode.set_label(_("Enable Powersave")) # Or a different label if desired
+                    self.indicator.set_icon("pardus-pm-balanced-symbolic") # Or a new icon ppm-ai-optimized-symbolic
+                else: # performance
                     self.power_mode.set_label(_("Enable Powersave"))
                     self.indicator.set_icon("pardus-pm-performance-symbolic")
         if "backlight" in data:
@@ -277,14 +283,22 @@ class MainWindow:
             self.o("ui_button_powersave").set_sensitive(False)
             self.o("ui_button_balanced").set_sensitive(True)
             self.o("ui_button_performance").set_sensitive(True)
+            self.o("ui_button_ai_optimized").set_sensitive(True)
         elif self.current_mode == "balanced":
             self.o("ui_button_powersave").set_sensitive(True)
             self.o("ui_button_balanced").set_sensitive(False)
             self.o("ui_button_performance").set_sensitive(True)
-        else:
+            self.o("ui_button_ai_optimized").set_sensitive(True)
+        elif self.current_mode == "ai_optimized":
+            self.o("ui_button_powersave").set_sensitive(True)
+            self.o("ui_button_balanced").set_sensitive(True)
+            self.o("ui_button_performance").set_sensitive(True)
+            self.o("ui_button_ai_optimized").set_sensitive(False)
+        else: # performance
             self.o("ui_button_powersave").set_sensitive(True)
             self.o("ui_button_balanced").set_sensitive(True)
             self.o("ui_button_performance").set_sensitive(False)
+            self.o("ui_button_ai_optimized").set_sensitive(True)
 
         if "info" in data:
             acpi = not (str(data["info"]["acpi-supported"]).lower() == "true")
@@ -404,6 +418,16 @@ class MainWindow:
         data = {}
         data["pid"] = os.getpid()
         data["new-mode"] = "performance"
+        send_server(data)
+
+    def ai_optimized_event(self,widget):
+        self.o("ui_button_powersave").set_sensitive(True)
+        self.o("ui_button_balanced").set_sensitive(True)
+        self.o("ui_button_performance").set_sensitive(True)
+        self.o("ui_button_ai_optimized").set_sensitive(False)
+        data = {}
+        data["pid"] = os.getpid()
+        data["new-mode"] = "ai_optimized"
         send_server(data)
 
 ###### Window functions ######
