@@ -28,6 +28,10 @@ def set_brightness(device_name,value):
     if device_name == "all":
         for dev in get_devices():
             set_brightness(dev, value)
+        return
+    # device_name comes from the world writable /run/ppm fifo
+    if device_name not in get_devices():
+        return
     if value.startswith("%"):
         percent = int(value[1:])
         value = (percent / 100 ) * get_max_brightness(device_name)

@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import stat
 from pathlib import Path
 sys.path.insert(0, os.path.dirname( os.path.realpath(__file__) )+"/../common")
 from common import *
@@ -29,13 +30,32 @@ def list_acpi_osi():
 def send_client(data):
     print(data)
     data["pid"] = str(os.getpid())
+    message = json.dumps(data).encode()
     for dir in listdir("/run/user"):
-        if os.path.exists("/run/user/{}/ppm/".format(dir)):
-            for fifo in listdir("/run/user/{}/ppm/".format(dir)):
+        # /run/user/<uid>/ppm belongs to the user. Don't follow symlinks
+        # in it and don't block on a fifo that nobody reads.
+        try:
+            dir_fd = os.open("/run/user/{}/ppm".format(dir),
+                             os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        except OSError:
+            continue
+        try:
+            for fifo in os.listdir(dir_fd):
                 debug("Send data to client: {} {}".format(dir, fifo))
-                if not os.path.isdir("/proc/{}".format(fifo)):
-                    os.unlink("/run/user/{}/ppm/{}".format(dir,fifo))
-                else:
-                    with open("/run/user/{}/ppm/{}".format(dir,fifo), "w") as f:
-                        f.write(json.dumps(data))
-                        f.flush()
+                try:
+                    if not os.path.isdir("/proc/{}".format(fifo)):
+                        os.unlink(fifo, dir_fd=dir_fd)
+                        continue
+                    fd = os.open(fifo, os.O_WRONLY | os.O_NONBLOCK | os.O_NOFOLLOW,
+                                 dir_fd=dir_fd)
+                except OSError:
+                    continue
+                try:
+                    if stat.S_ISFIFO(os.fstat(fd).st_mode):
+                        os.write(fd, message)
+                except OSError:
+                    pass
+                finally:
+                    os.close(fd)
+        finally:
+            os.close(dir_fd)
